@@ -1,4 +1,4 @@
-# Argument Parser
+# Argument Parser Function
 using ArgParse
 
 function parse_arguments()
@@ -24,10 +24,28 @@ function parse_arguments()
     return parse_args(s)
 end
 
+function file_exists(path::String)
+    if !isfile(path)
+        println("File not found at '$path'")
+        exit()
+    end
+end
+
 function main()
     parsed_args = parse_arguments()
-    for (arg, val) in parsed_args
-        println(" $arg => $val")
+# Store arguments as variables
+    reads_f = parsed_args["file1"]
+    reads_r = parsed_args["file2"]
+    number = parsed_args["number"]
+    percent = parsed_args["percent"]
+
+# Test arguments
+    file_exists(reads_f)
+    file_exists(reads_r)
+
+    if isnothing(number) & isnothing(percent)
+        println("Please indicate a depth to subsample with '-n' or '-p'!")
+        exit()
     end
 end
 
